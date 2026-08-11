@@ -23,7 +23,7 @@ public static class AutoPassSettings
 {
     public static bool Enabled = true;
 
-    public static PotionBlockMode PotionMode = PotionBlockMode.ElitesAndBosses;
+    public static PotionBlockMode PotionMode = PotionBlockMode.Always;
 
     private record Persisted(bool Enabled, string PotionMode);
 

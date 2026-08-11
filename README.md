@@ -19,12 +19,14 @@ AutoPass):
 | Setting | Options | Default |
 |---|---|---|
 | Auto-end turn | on / off | on |
-| Potions block auto-pass | Always / Elites & bosses only / Never | Elites & bosses only |
+| Potions block auto-pass | Always / Elites & bosses only / Never | Always |
 
-With the default, hallway fights auto-pass even while you hoard potions, but
-elite/boss fights never end your turn while you hold a usable potion. If you
-want to drink a potion in a hallway fight (e.g. Fire Potion for lethal), drink
-it **before** playing your last card.
+The default is conservative: any usable potion prevents auto-pass, so the mod
+never ends a turn where you could still drink something. Switch to
+"Elites & bosses only" to auto-pass through hallway fights while you hoard
+potions (elite/boss fights still never end your turn while you hold a usable
+potion), or "Never" to ignore potions entirely. With those modes, drink
+potions **before** playing your last card.
 
 ## UnifiedSaves
 
