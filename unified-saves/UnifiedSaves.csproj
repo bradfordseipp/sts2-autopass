@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>UnifiedSaves</AssemblyName>
+    <RootNamespace>UnifiedSaves</RootNamespace>
+    <NoWarn>$(NoWarn);MSB3270</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Sts2AppDir Condition="'$(Sts2AppDir)' == ''">$(HOME)/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app</Sts2AppDir>
+    <Sts2DataDir Condition="'$(Sts2DataDir)' == ''">$(Sts2AppDir)/Contents/Resources/data_sts2_macos_arm64</Sts2DataDir>
+    <ModsDir Condition="'$(ModsDir)' == ''">$(Sts2AppDir)/Contents/MacOS/mods</ModsDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="sts2">
+      <HintPath>$(Sts2DataDir)/sts2.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="GodotSharp">
+      <HintPath>$(Sts2DataDir)/GodotSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(Sts2DataDir)/0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="CheckSts2" BeforeTargets="BeforeBuild">
+    <Error Text="Slay the Spire 2 data not found at '$(Sts2DataDir)'. Pass -p:Sts2DataDir=..." Condition="!Exists('$(Sts2DataDir)')" />
+  </Target>
+
+  <Target Name="InstallMod" AfterTargets="PostBuildEvent">
+    <Copy SourceFiles="$(TargetPath);UnifiedSaves.json" DestinationFolder="$(ModsDir)/UnifiedSaves/" />
+    <Message Text="Installed to $(ModsDir)/UnifiedSaves/" Importance="high" />
+  </Target>
+</Project>
