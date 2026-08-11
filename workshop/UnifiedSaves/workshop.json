@@ -1,0 +1,9 @@
+{
+  "title": "UnifiedSaves — use your real saves in modded play (with auto-backups)",
+  "description": "Slay the Spire 2 sandboxes modded play into a separate save directory, so playing with any mod means starting your progression from scratch. UnifiedSaves patches the single path switch responsible, so modded play uses your NORMAL profiles — unlocks, ascension, run history and all.\n\nBecause that removes the game's safety sandbox, UnifiedSaves takes a full snapshot of your save data on EVERY launch (into backups/ inside the game's user-data folder, keeping the last 10) before the game writes anything.\n\n⚠️ Use at your own risk alongside big content mods — a buggy mod writing into your real saves is exactly what the sandbox normally prevents. The launch snapshots are your insurance.\n\nSource: https://github.com/bradfordseipp/sts2-autopass",
+  "visibility": "private",
+  "changeNote": "Initial release (v0.1.0), built against v0.107.1.",
+  "tags": [],
+  "dependencies": [],
+  "contentDescriptors": []
+}

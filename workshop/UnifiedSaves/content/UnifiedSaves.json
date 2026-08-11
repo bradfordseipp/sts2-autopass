@@ -1,0 +1,12 @@
+{
+    "id": "UnifiedSaves",
+    "name": "UnifiedSaves",
+    "author": "bseipp",
+    "description": "Modded play uses your normal save profiles instead of the separate 'modded' sandbox. Snapshots all saves into <game user data>/backups/ on every launch (keeps last 10) before anything is written.",
+    "version": "0.1.0",
+    "min_game_version": "0.107.0",
+    "has_pck": false,
+    "has_dll": true,
+    "dependencies": [],
+    "affects_gameplay": false
+}
