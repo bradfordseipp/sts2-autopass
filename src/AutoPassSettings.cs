@@ -25,7 +25,14 @@ public static class AutoPassSettings
 
     public static PotionBlockMode PotionMode = PotionBlockMode.Always;
 
-    private record Persisted(bool Enabled, string PotionMode);
+    public static bool AutoPickIdentical = true;
+
+    private class Persisted
+    {
+        public bool Enabled { get; set; } = true;
+        public string PotionMode { get; set; } = "";
+        public bool AutoPickIdentical { get; set; } = true;
+    }
 
     private static string FilePath =>
         Godot.ProjectSettings.GlobalizePath("user://AutoPass.settings.json");
@@ -44,6 +51,7 @@ public static class AutoPassSettings
                 return;
             }
             Enabled = p.Enabled;
+            AutoPickIdentical = p.AutoPickIdentical;
             if (Enum.TryParse(p.PotionMode, out PotionBlockMode mode))
             {
                 PotionMode = mode;
@@ -60,7 +68,12 @@ public static class AutoPassSettings
         try
         {
             File.WriteAllText(FilePath, JsonSerializer.Serialize(
-                new Persisted(Enabled, PotionMode.ToString()),
+                new Persisted
+                {
+                    Enabled = Enabled,
+                    PotionMode = PotionMode.ToString(),
+                    AutoPickIdentical = AutoPickIdentical,
+                },
                 new JsonSerializerOptions { WriteIndented = true }));
         }
         catch (Exception e)

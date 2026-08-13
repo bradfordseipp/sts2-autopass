@@ -31,7 +31,7 @@ public static class ModInfoSettingsUi
         box.SetAnchorsPreset(Control.LayoutPreset.BottomWide);
         box.OffsetLeft = 16;
         box.OffsetRight = -16;
-        box.OffsetTop = -170;
+        box.OffsetTop = -210;
         box.OffsetBottom = -24;
 
         var header = new Label { Text = "Settings" };
@@ -49,6 +49,18 @@ public static class ModInfoSettingsUi
             AutoPassSettings.Save();
         };
         box.AddChild(enabledToggle);
+
+        var autoPickToggle = new CheckButton
+        {
+            Text = "Auto-pick when selection cards are identical",
+            ButtonPressed = AutoPassSettings.AutoPickIdentical,
+        };
+        autoPickToggle.Toggled += pressed =>
+        {
+            AutoPassSettings.AutoPickIdentical = pressed;
+            AutoPassSettings.Save();
+        };
+        box.AddChild(autoPickToggle);
 
         var potionRow = new HBoxContainer();
         potionRow.AddThemeConstantOverride("separation", 12);
