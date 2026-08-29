@@ -56,7 +56,9 @@ public static class AutoEndTurnPatch
         _subscribedQueueSet = queueSet;
     }
 
-    private static void TryScheduleAutoEnd()
+    /// Also called directly when AutoPass is toggled on (hotkey or settings UI), so
+    /// enabling it in an already-actionless state passes the turn immediately.
+    public static void TryScheduleAutoEnd()
     {
         var button = _button;
         if (_pending || button == null || !AutoPassSettings.Enabled ||
@@ -158,7 +160,7 @@ public static class AutoEndTurnPatch
             return false;
         }
 
-        if (me.Potions.Any(p => IsManuallyUsableInCombat(p) && BlocksAutoPass(p, combatState)))
+        if (PotionsBlockHere(combatState) && me.Potions.Any(IsManuallyUsableInCombat))
         {
             return false;
         }
@@ -166,14 +168,14 @@ public static class AutoEndTurnPatch
         return true;
     }
 
-    private static bool BlocksAutoPass(MegaCrit.Sts2.Core.Models.PotionModel potion, CombatState combatState)
+    private static bool PotionsBlockHere(CombatState combatState)
     {
         switch (AutoPassSettings.PotionMode)
         {
             case PotionBlockMode.Never:
                 return false;
             case PotionBlockMode.ElitesAndBosses:
-                return IsEliteTierFight(combatState) || IsDrinkLastPotion(potion);
+                return IsEliteTierFight(combatState);
             default:
                 return true;
         }
@@ -191,15 +193,6 @@ public static class AutoEndTurnPatch
         // elite stakes, where you actually want your potions.
         return combatState.Encounter
             is MegaCrit.Sts2.Core.Models.Encounters.MysteriousKnightEventEncounter;
-    }
-
-    /// Potions whose value depends on state built up during the turn — they want to
-    /// be drunk after your last card, so they block auto-pass in any fight.
-    private static bool IsDrinkLastPotion(MegaCrit.Sts2.Core.Models.PotionModel potion)
-    {
-        // Fortifier: gain 2x your current block. Playing your last block card first
-        // is the whole point.
-        return potion is MegaCrit.Sts2.Core.Models.Potions.Fortifier;
     }
 
     private static bool IsManuallyUsableInCombat(MegaCrit.Sts2.Core.Models.PotionModel potion)

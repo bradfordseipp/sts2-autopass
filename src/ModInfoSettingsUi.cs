@@ -47,6 +47,10 @@ public static class ModInfoSettingsUi
         {
             AutoPassSettings.Enabled = pressed;
             AutoPassSettings.Save();
+            if (pressed)
+            {
+                AutoEndTurnPatch.TryScheduleAutoEnd();
+            }
         };
         box.AddChild(enabledToggle);
 

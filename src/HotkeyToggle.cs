@@ -29,6 +29,10 @@ public static class HotkeyToggle
             AutoPassSettings.Save();
             AutoPassMod.Logger.Info($"Hotkey toggle: AutoPass {(AutoPassSettings.Enabled ? "ON" : "OFF")}");
             ShowOverlay(AutoPassSettings.Enabled);
+            if (AutoPassSettings.Enabled)
+            {
+                AutoEndTurnPatch.TryScheduleAutoEnd();
+            }
         }
         _wasPressed = pressed;
     }
