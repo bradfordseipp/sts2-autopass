@@ -40,7 +40,7 @@ public static class ModInfoSettingsUi
 
         var enabledToggle = new CheckButton
         {
-            Text = "Auto-end turn when no actions remain",
+            Text = "Auto-end turn when no actions remain (F8 toggles anywhere)",
             ButtonPressed = AutoPassSettings.Enabled,
         };
         enabledToggle.Toggled += pressed =>

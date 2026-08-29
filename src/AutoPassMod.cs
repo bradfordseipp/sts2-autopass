@@ -16,6 +16,7 @@ public static class AutoPassMod
         AutoPassSettings.Load();
         var harmony = new Harmony(ModId);
         harmony.PatchAll();
-        Logger.Info("AutoPass loaded.");
+        HotkeyToggle.Install();
+        Logger.Info("AutoPass loaded. F8 toggles auto-pass at any time.");
     }
 }
