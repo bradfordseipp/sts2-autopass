@@ -1,24 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project>
+  <!-- Shared build settings for all mods in this repo. -->
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyName>AutoPass</AssemblyName>
-    <RootNamespace>AutoPass</RootNamespace>
     <NoWarn>$(NoWarn);MSB3270</NoWarn>
   </PropertyGroup>
 
-  <!-- Locate the STS2 install (macOS default; override with -p:Sts2DataDir=...) -->
+  <!-- Locate the STS2 install (macOS default; override with -p:Sts2DataDir=... -p:ModsDir=...) -->
   <PropertyGroup>
     <Sts2AppDir Condition="'$(Sts2AppDir)' == ''">$(HOME)/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app</Sts2AppDir>
     <Sts2DataDir Condition="'$(Sts2DataDir)' == ''">$(Sts2AppDir)/Contents/Resources/data_sts2_macos_arm64</Sts2DataDir>
     <ModsDir Condition="'$(ModsDir)' == ''">$(Sts2AppDir)/Contents/MacOS/mods</ModsDir>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="unified-saves/**" />
-  </ItemGroup>
 
   <ItemGroup>
     <Reference Include="sts2">
@@ -41,7 +36,7 @@
 
   <!-- Install straight into the game's mods folder after every build -->
   <Target Name="InstallMod" AfterTargets="PostBuildEvent">
-    <Copy SourceFiles="$(TargetPath);AutoPass.json" DestinationFolder="$(ModsDir)/AutoPass/" />
-    <Message Text="Installed to $(ModsDir)/AutoPass/" Importance="high" />
+    <Copy SourceFiles="$(TargetPath);$(MSBuildProjectDirectory)/$(AssemblyName).json" DestinationFolder="$(ModsDir)/$(AssemblyName)/" />
+    <Message Text="Installed to $(ModsDir)/$(AssemblyName)/" Importance="high" />
   </Target>
 </Project>

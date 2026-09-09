@@ -92,18 +92,19 @@ platform-independent (AnyCPU .NET).
 ## Building from source
 
 Requires the .NET 9 SDK and an installed copy of Slay the Spire 2 (the build
-references the game's `sts2.dll`).
+references the game's `sts2.dll`). One command builds both mods:
 
 ```sh
-dotnet build AutoPass.csproj -c Release
-dotnet build unified-saves/UnifiedSaves.csproj -c Release
+dotnet build -c Release
 ```
 
-On macOS with a default Steam install this also copies the built mod straight
-into the game's mods folder. On other platforms, pass the paths:
+Shared paths and references live in `Directory.Build.props`; each mod is a
+project under `src/`. On macOS with a default Steam install the build also
+copies each mod straight into the game's mods folder. On other platforms,
+pass the paths:
 
 ```sh
-dotnet build AutoPass.csproj -c Release \
+dotnet build -c Release \
   -p:Sts2DataDir="<game>/data_sts2_windows_x86_64" -p:ModsDir="<game>/mods"
 ```
 

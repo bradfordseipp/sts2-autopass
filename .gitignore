@@ -2,4 +2,5 @@ bin/
 obj/
 .DS_Store
 backups/
-workshop/*/content/*.dll
+# Workshop upload staging — repopulated from build output before each upload
+workshop/*/content/

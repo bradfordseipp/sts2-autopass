@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>UnifiedSaves</AssemblyName>
+    <RootNamespace>UnifiedSaves</RootNamespace>
+  </PropertyGroup>
+</Project>
