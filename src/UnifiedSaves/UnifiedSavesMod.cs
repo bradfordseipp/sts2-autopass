@@ -6,10 +6,15 @@ namespace UnifiedSaves;
 
 /// <summary>
 /// STS2 sandboxes modded play into a separate "modded/profileN" save directory.
-/// The "modded/" prefix is produced in exactly one place in the game:
-/// UserDataPathProvider.GetProfileDir. This mod patches it out so modded play
-/// reads and writes your normal profiles — after snapshotting every save file
-/// first, so a misbehaving mod can never cost you progress you can't get back.
+/// The "modded" prefix is produced in exactly one place in the game — this mod
+/// patches it out so modded play reads and writes your normal profiles, after
+/// snapshotting every save file first.
+///
+/// The choke point moved between game versions, so we patch whichever exists:
+/// - v0.111+ (beta): GetAccountDir(bool? forceModState) — we leave explicit
+///   forceModState:true callers alone in case anything deliberately addresses
+///   the modded directory.
+/// - v0.107 (stable): GetProfileDir(int).
 /// </summary>
 [ModInitializer(nameof(Initialize))]
 public static class UnifiedSavesMod
@@ -34,15 +39,42 @@ public static class UnifiedSavesMod
         }
 
         var harmony = new Harmony(ModId);
-        harmony.PatchAll();
+
+        var getAccountDir = AccessTools.DeclaredMethod(
+            typeof(UserDataPathProvider), "GetAccountDir", new[] { typeof(bool?) });
+        if (getAccountDir != null)
+        {
+            harmony.Patch(getAccountDir,
+                prefix: new HarmonyMethod(typeof(UnifiedSavesMod), nameof(GetAccountDirPrefix)));
+        }
+        else
+        {
+            var getProfileDir = AccessTools.DeclaredMethod(
+                typeof(UserDataPathProvider), "GetProfileDir", new[] { typeof(int) });
+            if (getProfileDir == null)
+            {
+                Logger.Warn("Could not find the save-path method to patch — game version " +
+                    "not supported. Saves are NOT unified this session.");
+                return;
+            }
+            harmony.Patch(getProfileDir,
+                prefix: new HarmonyMethod(typeof(UnifiedSavesMod), nameof(GetProfileDirPrefix)));
+        }
+
         Logger.Info("Save paths unified: modded play now uses your normal profiles.");
     }
-}
 
-[HarmonyPatch(typeof(UserDataPathProvider), nameof(UserDataPathProvider.GetProfileDir))]
-public static class GetProfileDirPatch
-{
-    public static bool Prefix(int profileId, ref string __result)
+    public static bool GetAccountDirPrefix(bool? forceModState, ref string __result)
+    {
+        if (forceModState == true)
+        {
+            return true;
+        }
+        __result = "";
+        return false;
+    }
+
+    public static bool GetProfileDirPrefix(int profileId, ref string __result)
     {
         __result = $"profile{profileId}";
         return false;
