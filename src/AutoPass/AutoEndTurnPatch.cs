@@ -61,7 +61,7 @@ public static class AutoEndTurnPatch
     public static void TryScheduleAutoEnd()
     {
         var button = _button;
-        if (_pending || button == null || !AutoPassSettings.Enabled ||
+        if (_pending || button == null || !AutoPassConfig.Enabled ||
             !Godot.GodotObject.IsInstanceValid(button) || !ShouldAutoEndTurn(button))
         {
             return;
@@ -85,7 +85,7 @@ public static class AutoEndTurnPatch
 
     private static bool ShouldAutoEndTurn(NEndTurnButton button)
     {
-        if (!AutoPassSettings.Enabled)
+        if (!AutoPassConfig.Enabled)
         {
             return false;
         }
@@ -170,7 +170,7 @@ public static class AutoEndTurnPatch
 
     private static bool PotionsBlockHere(CombatState combatState)
     {
-        switch (AutoPassSettings.PotionMode)
+        switch (AutoPassConfig.PotionMode)
         {
             case PotionBlockMode.Never:
                 return false;

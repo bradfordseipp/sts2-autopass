@@ -3,4 +3,22 @@
     <AssemblyName>AutoPass</AssemblyName>
     <RootNamespace>AutoPass</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Compile against BaseLib; provided at runtime by the BaseLib mod, so don't copy it. -->
+    <PackageReference Include="Alchyr.Sts2.BaseLib" Version="3.4.7" PrivateAssets="All" />
+    <!-- Packs src/AutoPass/AutoPass/** into AutoPass.pck at build time (no Godot needed). -->
+    <PackageReference Include="BSchneppe.StS2.PckPacker" Version="0.1.1" PrivateAssets="All" />
+  </ItemGroup>
+
+  <!-- Keep loc assets out of the C# compile. -->
+  <ItemGroup>
+    <None Include="AutoPass/**" />
+  </ItemGroup>
+
+  <!-- Copy the packed .pck into the mods folder (dll + json are handled by Directory.Build.props). -->
+  <Target Name="InstallPck" AfterTargets="PackPck" Condition="Exists('$(PckPackerOutputPath)')">
+    <Copy SourceFiles="$(PckPackerOutputPath)" DestinationFolder="$(ModsDir)/$(AssemblyName)/" />
+    <Message Text="Installed AutoPass.pck to $(ModsDir)/$(AssemblyName)/" Importance="high" />
+  </Target>
 </Project>

@@ -1,0 +1,15 @@
+{
+  "AUTOPASS.mod_title": "AutoPass",
+
+  "AUTOPASS-ENABLED.title": "Auto-end turn when no actions remain",
+  "AUTOPASS-ENABLED.hover.desc": "Automatically end your turn when you have no playable card and no usable potion. Press F8 anytime (including mid-fight) to toggle this on or off, with an on-screen indicator.",
+
+  "AUTOPASS-AUTO_PICK_IDENTICAL.title": "Auto-pick identical selection cards",
+  "AUTOPASS-AUTO_PICK_IDENTICAL.hover.desc": "When a fixed-count card selection (e.g. Survivor discarding one of several unenchanted Strikes) offers only functionally identical cards, resolve it automatically and skip the selection screen. Optional selections like Well-Laid Plans always show their screen. Single-player only.",
+
+  "AUTOPASS-POTION_MODE.title": "Potions block auto-pass",
+  "AUTOPASS-POTION_MODE.hover.desc": "When a usable potion should prevent auto-passing. Always: any usable potion blocks. Elites & bosses only: hallway fights auto-pass while you hoard potions, but elite/boss fights (and the Lantern Key guardian) never end your turn while you hold one. Never: potions are ignored. With the latter two, drink potions before playing your last card, or use F8.",
+  "AUTOPASS-POTION_MODE.Always": "Always",
+  "AUTOPASS-POTION_MODE.ElitesAndBosses": "Elites & bosses only",
+  "AUTOPASS-POTION_MODE.Never": "Never"
+}

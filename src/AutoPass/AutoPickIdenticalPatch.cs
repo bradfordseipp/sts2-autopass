@@ -34,7 +34,7 @@ public static class AutoPickIdentical
     {
         picked = null!;
 
-        if (!AutoPassSettings.Enabled || !AutoPassSettings.AutoPickIdentical)
+        if (!AutoPassConfig.Enabled || !AutoPassConfig.AutoPickIdentical)
         {
             return false;
         }

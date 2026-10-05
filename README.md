@@ -35,8 +35,9 @@ Fortifier wants to be drunk *after* your last block card): F8 off, play your
 cards, drink, F8 on. Toggling on with no actions left passes the turn
 immediately.
 
-**Settings** live in the game's own Mods screen (Settings → Mods → select
-AutoPass):
+**Settings** live in the in-game mod-config menu (provided by
+[BaseLib](https://github.com/Alchyr/BaseLib-StS2), AutoPass's one dependency) —
+native, controller-navigable controls with hover descriptions:
 
 | Setting | Options | Default |
 |---|---|---|
@@ -86,6 +87,10 @@ So e.g. `mods/AutoPass/AutoPass.json` + `mods/AutoPass/AutoPass.dll`. Then
 launch the game, agree to load mods, and enable them in the Mods menu
 (restart required).
 
+**AutoPass requires [BaseLib](https://github.com/Alchyr/BaseLib-StS2)** for its
+config UI — install it too (it also appears in the mods folder / Workshop).
+UnifiedSaves has no dependencies.
+
 Grab prebuilt zips from the [Releases](../../releases) page — the DLLs are
 platform-independent (AnyCPU .NET).
 
@@ -99,25 +104,29 @@ dotnet build -c Release
 ```
 
 Shared paths and references live in `Directory.Build.props`; each mod is a
-project under `src/`. On macOS with a default Steam install the build also
-copies each mod straight into the game's mods folder. On other platforms,
-pass the paths:
+project under `src/`. AutoPass additionally restores BaseLib (as a reference)
+and `BSchneppe.StS2.PckPacker` from NuGet, which packs its localization into
+`AutoPass.pck` at build time — no Godot install required. On macOS with a
+default Steam install the build also copies each mod straight into the game's
+mods folder. On other platforms, pass the paths:
 
 ```sh
 dotnet build -c Release \
   -p:Sts2DataDir="<game>/data_sts2_windows_x86_64" -p:ModsDir="<game>/mods"
 ```
 
-## Why not BaseLib?
+## On BaseLib
 
-[BaseLib](https://github.com/Alchyr/BaseLib-StS2) is the excellent de-facto
-standard foundation for STS2 *content* mods — if these mods ever grow custom
-cards/relics/potions, it's the obvious choice. But AutoPass and UnifiedSaves
-add no content: their core is a handful of Harmony patches BaseLib doesn't
-abstract, and staying dependency-free means one-click installs and no waiting
-on a dependency update after game patches. UnifiedSaves in particular stays
-minimal on principle — it's the mod that backs up your saves before anything
-else runs, so it should keep working even when other mods break.
+[BaseLib](https://github.com/Alchyr/BaseLib-StS2) is the de-facto standard
+foundation for STS2 mods. **AutoPass** uses it for one thing: its settings menu
+— native, controller-navigable, themed controls with hover tooltips, far nicer
+than a hand-injected panel, and a shared home alongside every other BaseLib
+mod's config.
+
+**UnifiedSaves deliberately stays dependency-free.** It's the mod that snapshots
+your saves before anything else runs, so it should keep working even when other
+mods (BaseLib included) break on a game patch. Its core is a single Harmony
+patch that needs no framework.
 
 ## Compatibility
 
